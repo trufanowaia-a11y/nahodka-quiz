@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Находка — викторина по рассказу М. Зощенко</title>
+<style>
+:root{--ink:#293447;--muted:#64748b;--paper:#fffdf8;--line:#e6dfd2;--accent:#315b52;--good:#dff3e5;--goodink:#176238;--bad:#fde5e3;--badink:#a52a24;--gold:#f4e6b8}
+*{box-sizing:border-box}body{margin:0;background:#f2eee6;color:var(--ink);font:16px/1.55 system-ui,-apple-system,Segoe UI,Arial,sans-serif}.wrap{max-width:900px;margin:auto;padding:24px 16px 60px}.hero{background:linear-gradient(135deg,#315b52,#203f3a);color:white;padding:30px;border-radius:20px;margin-bottom:20px}.hero h1{margin:0 0 8px;font-size:clamp(27px,5vw,40px)}.hero p{margin:0;color:#e5eee9}.scorebar{position:sticky;top:8px;z-index:5;background:#fffdf8ed;border:1px solid var(--line);backdrop-filter:blur(8px);padding:12px 16px;border-radius:14px;display:flex;justify-content:space-between;align-items:center;gap:12px;margin:16px 0;box-shadow:0 5px 18px #27332612}.scorebar strong{font-size:20px;color:var(--accent)}.section,.question,.result{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:22px;margin:16px 0}.section h2{margin:0 0 6px;font-size:22px}.sub{color:var(--muted);margin:0 0 16px}.q{padding:16px 0;border-top:1px solid var(--line)}.q:first-of-type{border-top:0}.q h3{font-size:17px;margin:0 0 10px}.opts{display:grid;gap:8px}.opt{display:flex;align-items:flex-start;gap:10px;text-align:left;width:100%;padding:11px 13px;border:1px solid #d8d5cd;border-radius:11px;background:white;color:var(--ink);font:inherit;cursor:pointer}.opt:hover:not(:disabled){border-color:var(--accent);background:#f5f8f5}.opt:disabled{cursor:default;opacity:1}.opt.correct{background:var(--good);border-color:#8ac49c;color:var(--goodink)}.opt.wrong{background:var(--bad);border-color:#e5a19b;color:var(--badink)}.feedback{font-size:14px;margin:8px 2px 0;color:var(--muted);min-height:0}.feedback.good{color:var(--goodink)}.feedback.bad{color:var(--badink)}.tf .opts{grid-template-columns:repeat(2,minmax(0,1fr))}.event{display:grid;grid-template-columns:70px 1fr;gap:12px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line)}.event input{width:64px;padding:10px;border:1px solid #cfc8bb;border-radius:9px;font:inherit;text-align:center}.event.correct-row{background:#f0faf2}.event.wrong-row{background:#fff1ef}.btn{border:0;border-radius:10px;background:var(--accent);color:white;font:600 15px system-ui;padding:12px 18px;cursor:pointer;margin-top:14px}.btn:disabled{opacity:.55;cursor:default}.pill{display:inline-block;background:#e8efe9;color:var(--accent);padding:4px 10px;border-radius:99px;font-size:13px;font-weight:700}.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px}.cue{background:#f6f1e6;border:1px solid var(--line);border-radius:12px;padding:14px}.cue b{display:block;color:var(--accent);margin-bottom:4px}.result{border:2px solid #b7c9b9}.big{font-size:34px;font-weight:800;color:var(--accent)}.super{background:#fff9e8;border:2px solid #e8d59c}.super h2{color:#785b16}.bonusrow{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.bonusrow input{width:100px;padding:10px;border:1px solid #c8b77f;border-radius:9px;font:inherit}.small{font-size:13px;color:var(--muted)}
+.score-page{position:relative;overflow:hidden;text-align:center;padding:30px 24px;border:0;border-radius:22px;box-shadow:0 12px 30px #27332616;background:linear-gradient(135deg,#fffdf8 0%,#f4f0e7 48%,#e8eee9 100%)}
+.score-page:before,.score-page:after{content:"✦  ✧  ✦";position:absolute;color:#c49b4a;font-size:24px;letter-spacing:12px;opacity:.65;pointer-events:none}
+.score-page:before{top:12px;left:18px}.score-page:after{bottom:12px;right:18px}
+.score-page h2{font-size:clamp(22px,4vw,30px);margin:0 0 10px;color:#354d48}
+.score-page .medal{width:66px;height:66px;margin:0 auto 12px;border-radius:50%;display:grid;place-items:center;font-size:32px;background:linear-gradient(145deg,#f8e7b5,#d6b56b);border:4px solid #fff8e8;box-shadow:0 4px 14px #8b713c35}
+.score-page .big{font-size:clamp(42px,8vw,58px);line-height:1.1;margin:12px 0;color:#314f49;text-shadow:0 2px #fff}
+.score-page p{max-width:620px;margin:10px auto;color:#58645f}
+.score-page .score-caption{font-size:13px;letter-spacing:2px;text-transform:uppercase;font-weight:800;color:#92723b}
+.score-page.main-result{background:linear-gradient(135deg,#fffaf0,#f1ead8 50%,#e7eee8)}
+.score-page.final-result{background:linear-gradient(135deg,#f8f4e9,#e9efe9 48%,#e8edf4)}
+.score-page .score-track{height:12px;max-width:460px;margin:18px auto 0;background:#ffffffb8;border:1px solid #d9d3c4;border-radius:99px;overflow:hidden}
+.score-page .score-fill{height:100%;width:0;background:linear-gradient(90deg,#c49b4a,#6b9483);border-radius:99px;transition:width .35s ease}
+.hidden{display:none}.footer{text-align:center;color:var(--muted);font-size:13px;margin-top:25px}
+@media(max-width:560px){.hero{padding:23px}.section,.question,.result{padding:16px}.event{grid-template-columns:58px 1fr;gap:8px}.event input{width:54px}.scorebar{top:4px}}
+</style></head>
+<body><main class="wrap">
+<header class="hero"><span class="pill">Литературная викторина · 7–9 лет</span><h1>«Находка»</h1><p>По рассказу Михаила Зощенко</p><p style="margin-top:12px">Вспомни события, подумай о поступках героев и проверь, насколько внимательно ты прочитал рассказ.</p></header>
+<div class="scorebar"><span>Текущий результат</span><strong><span id="score">0</span> / 38 баллов</strong></div>
+<section class="section" id="s1"><h2>1. Проверь, что ты запомнил</h2><p class="sub">15 вопросов · 1 балл за каждый правильный ответ</p><div id="facts"></div></section>
+<section class="section" id="s2"><h2>2. Верно или неверно?</h2><p class="sub">10 утверждений · 1 балл за каждый правильный ответ</p><div id="truths"></div></section>
+<section class="section" id="s3"><h2>3. Восстанови последовательность событий</h2><p class="sub">Поставь номера от 1 до 8. За каждое событие на правильном месте — 1 балл. После заполнения нажми «Проверить последовательность».</p><div id="events"></div><button class="btn" id="checkOrder">Проверить последовательность</button><div class="feedback" id="orderFeedback" aria-live="polite"></div></section>
+<section class="section" id="s4"><h2>4. Подумай о героях</h2><p class="sub">5 вопросов · 1 балл за каждый правильный ответ</p><div id="motives"></div></section>
+<section class="result score-page main-result" id="mainResult"><div class="medal" aria-hidden="true">🏅</div><div class="score-caption">Первый этап пройден</div><h2>Твой результат основной части</h2><div class="big"><span id="mainScore">0</span> <span style="font-size:25px;color:#8b806c">/ 38</span></div><div class="score-track"><div class="score-fill" id="mainFill"></div></div><p id="mainMessage">Ответь на все вопросы и проверь последовательность событий, чтобы увидеть итог.</p></section>
+<section class="section super" id="superLevel"><span class="pill">Бонусный этап</span><h2>🌟 Суперзадание: расскажи историю!</h2><p>Ты выполнил основную часть викторины. Теперь можно заработать ещё <b>до 12 баллов</b> за устный пересказ рассказа «Находка».</p><p>Рассмотри опорные карточки и перескажи историю самостоятельно. Постарайся не пропустить важные события и объяснить, как изменилось отношение Миньки к поступку из детства.</p><div class="cards">
+<div class="cue"><b>1. Необычная коробка</b>Лёля, Минька, лягушка и паук</div><div class="cue"><b>2. Розыгрыш</b>Красивая упаковка, прохожий, ожидание в кустах</div><div class="cue"><b>3. Последствия</b>Испуг прохожего, наказание Миньки</div><div class="cue"><b>4. Слова папы</b>Разговор родителей и предсказание отца</div><div class="cue"><b>5. Через двенадцать лет</b>Минька-студент, Ростов, трудное положение</div><div class="cue"><b>6. Красный кошелёк</b>Ложная надежда, нитка, детский смех</div><div class="cue"><b>7. Воспоминание</b>Минька вспоминает свою детскую шутку</div><div class="cue"><b>8. Понимание</b>Он отказывается от мести и позже получает документы и деньги</div>
+</div><hr style="border:0;border-top:1px solid #e8d59c;margin:18px 0"><h3>Оценка пересказа — выставляет логопед</h3><p class="small">Внеси баллы после того, как ребёнок закончит пересказ. Это бонус, он не входит в автоматическую оценку.</p><div class="bonusrow"><label for="bonus">Бонусные баллы (0–12):</label><input id="bonus" type="number" min="0" max="12" step="1" value="0"><button class="btn" id="applyBonus">Добавить бонус</button></div><div class="feedback" id="bonusFeedback" aria-live="polite">Сейчас добавлено: 0 баллов.</div></section>
+<section class="result score-page final-result"><div class="medal" aria-hidden="true">🏆</div><div class="score-caption">Финиш викторины</div><h2>Твой большой итог!</h2><div class="big"><span id="totalScore">0</span> <span style="font-size:25px;color:#8b806c">/ 50</span></div><div class="score-track"><div class="score-fill" id="totalFill"></div></div><p id="totalMessage">Основная часть: 0 из 38. Бонус за пересказ: 0 из 12.</p><p style="font-weight:700;color:#92723b">Каждый правильный ответ — твоя маленькая победа! ✨</p></section>
+<div class="footer">Викторина по рассказу М. Зощенко «Находка»</div>
+</main>
+<script>
+const factQs=[
+['Что положили Лёля и Минька в коробку от конфет?',['Лягушку и паука','Жука и червяка','Мышонка и жука','Две игрушки'],0,'В коробке находились лягушка и паук.'],
+['Чем дети перевязали свёрток?',['Красной тесьмой','Голубой ленточкой','Жёлтой верёвочкой','Белой лентой'],1,'Они завернули коробку в чистую бумагу и перевязали голубой ленточкой.'],
+['Где дети оставили свёрток?',['У ворот школы','На скамейке в саду','На панели напротив своего сада','Возле вокзала'],2,'Свёрток положили на панели напротив сада, возле тумбы.'],
+['Где спрятались Лёля и Минька?',['В доме','За деревом у дороги','В сарае','В кустах сада'],3,'Дети спрятались в кустах своего сада.'],
+['Как прохожий отреагировал на найденный пакет сначала?',['Обрадовался и потёр руки','Сразу позвал полицейского','Прошёл мимо','Отдал пакет детям'],0,'Прохожий обрадовался, потому что решил, что нашёл коробку конфет.'],
+['Что произошло, когда прохожий открыл коробку?',['Из неё выпал мяч','Лягушка выскочила ему на руку','Паук уполз в траву','Коробка оказалась пустой'],1,'Лягушка выскочила прямо на руку прохожего.'],
+['Что сделал прохожий от неожиданности?',['Положил коробку обратно','Позвал детей','Швырнул коробку подальше','Унёс её домой'],2,'Он ахнул и швырнул коробку подальше от себя.'],
+['Как прохожий поступил с Минькой?',['Пожаловался папе','Попросил убрать мусор','Проводил домой','Догнал и надрал ему уши'],3,'Прохожий догнал Миньку и надрал ему уши.'],
+['Что хотела сделать мама после случившегося?',['Позвать дворника, чтобы догнать и арестовать прохожего','Самой догнать прохожего и вернуть коробку','Наказать Лёлю и Миньку','Запретить детям выходить в сад'],0,'Мама хотела позвать дворника, чтобы догнать прохожего и арестовать его.'],
+['Что сказал папа о том, когда Минька поймёт, почему шутка плохая?',['На следующий день','Когда вырастет','Когда пойдёт в школу','Через неделю'],1,'Папа сказал, что Минька поймёт это, когда станет старше.'],
+['Сколько лет прошло до второго похожего случая?',['Пять лет','Десять лет','Двенадцать лет','Пятнадцать лет'],2,'В рассказе говорится, что прошло двенадцать лет.'],
+['Кем стал Минька, когда вырос?',['Врачом','Учителем','Машинистом','Студентом'],3,'Взрослый Минька рассказывает, что был студентом и ехал летом работать контролёром поездов.'],
+['В каком городе Минька оказался в затруднительном положении?',['В Ростове','В Москве','В Туле','В Киеве'],0,'Трудности произошли в Ростове.'],
+['Сколько денег оставалось у Миньки?',['Десять копеек','Три копейки','Пять копеек','Ни одной копейки'],1,'У него оставалось всего три копейки.'],
+['Что сделал Минька, когда вспомнил детскую сценку?',['Перепрыгнул через забор','Позвал взрослых','Покраснел и отошёл от забора','Стал смеяться вместе с ребятами'],2,'Он покраснел, отошёл от забора и пошёл дальше.']
+];
+const trueQs=[
+['В коробке от конфет лежали лягушка и паук.',true,'Именно этих животных дети положили в коробку.'],
+['Лёля и Минька оставили свёрток на крыльце своего дома.',false,'Они положили его на панели напротив сада, возле тумбы.'],
+['Прохожий сначала обрадовался находке.',true,'Он подумал, что нашёл коробку конфет.'],
+['Лягушка выпрыгнула из коробки прямо на руку прохожего.',true,'Так произошло, когда мужчина открыл коробку.'],
+['Папа поддержал розыгрыш детей и похвалил их.',false,'Папа не одобрил поступок и сказал, что Минька поймёт его плохую сторону, когда вырастет.'],
+['Через двенадцать лет Минька оказался в Ростове без денег и документов.',true,'В Ростове он не мог получить свои деньги и удостоверение до открытия канцелярии.'],
+['Минька увидел на улице большой чёрный кожаный чемодан.',false,'Он увидел маленький красный плюшевый кошелёк, туго набитый деньгами.'],
+['Кошелёк был привязан к нитке.',true,'Дети за забором тянули кошелёк за нитку.'],
+['Минька всё-таки перелез через забор и наказал ребят.',false,'Он уже схватился за забор, но вспомнил детский случай и отказался от этой мысли.'],
+['В конце рассказа Минька получил свои деньги и документы и поехал на Кавказ.',true,'После ожидания в канцелярии ему выдали документы и деньги.']
+];
+const motiveQs=[
+['Почему дети спрятались в кустах после того, как оставили пакет?',['Чтобы увидеть реакцию прохожего','Чтобы прохожий не заметил их заранее','Чтобы дождаться родителей','Чтобы забрать пакет обратно'],0,'Они хотели наблюдать за человеком и смеяться над его реакцией.'],
+['Почему прохожий рассердился на Миньку?',['Мальчик испортил его одежду','Он понял, что его обманули и выставили смешным','Минька отказался помочь','Мальчик забрал у него деньги'],1,'Мужчина понял, что красивая находка была обманом и розыгрышем.'],
+['Почему папа не стал просто читать детям длинную нотацию?',['Он не заметил происшествия','Он считал, что шутка была хорошей','Он полагал, что Минька поймёт это позже на собственном опыте','Он хотел, чтобы дети повторили розыгрыш'],2,'Папа предположил, что жизненный опыт поможет Миньке понять чувства обманутого человека.'],
+['Почему Минька так обрадовался, увидев кошелёк?',['Он хотел подарить его детям','Он собирался купить игрушку','Он подумал, что кошелёк принадлежит ему','Он был в трудном положении и надеялся на деньги'],3,'Минька был без денег в чужом городе и представил, что сможет купить еду и переночевать в гостинице.'],
+['Почему Минька не стал мстить детям за кошелёк на нитке?',['Он вспомнил, что сам когда-то так обманул прохожего','Он испугался темноты','Он решил, что кошелёк пустой','Он не смог найти калитку'],0,'Воспоминание о собственном детском розыгрыше помогло ему понять чувства человека, которого обманули.']
+];
+let score=0,answered=new Set(),orderChecked=false,bonus=0;
+function shuffledPositions(count){
+  // Равномерный набор позиций, который перемешивается без циклического шаблона А-Б-В-Г.
+  const base=Array.from({length:count},(_,i)=>i%4);
+  const isCyclicRun=(arr)=>{
+    for(let i=0;i<=arr.length-4;i++){
+      const a=arr.slice(i,i+4);
+      if([0,1,2,3].some(start=>a.every((v,j)=>v===(start+j)%4))) return true;
+    }
+    return false;
+  };
+  let positions;
+  do{
+    positions=[...base];
+    for(let i=positions.length-1;i>0;i--){
+      const j=Math.floor(Math.random()*(i+1));
+      [positions[i],positions[j]]=[positions[j],positions[i]];
+    }
+  }while(isCyclicRun(positions));
+  return positions;
+}
+function renderChoice(target,arr,prefix,truth=false){
+  const root=document.getElementById(target);
+  const positions=truth?[]:shuffledPositions(arr.length);
+  arr.forEach((item,i)=>{
+    const [q,opts,key,why]=item;
+    const id=prefix+i;
+    const box=document.createElement('div');
+    box.className='q'+(truth?' tf':'');
+    box.innerHTML=`<h3>${i+1}. ${q}</h3><div class="opts"></div><div class="feedback" id="fb-${id}" aria-live="polite"></div>`;
+    const op=box.querySelector('.opts');
+    if(!truth){
+      const correctEntry={label:opts[key],index:key};
+      const others=opts.map((label,index)=>({label,index})).filter(x=>x.index!==key);
+      for(let j=others.length-1;j>0;j--){
+        const k=Math.floor(Math.random()*(j+1));
+        [others[j],others[k]]=[others[k],others[j]];
+      }
+      const correctPosition=positions[i];
+      const choices=[...others];
+      choices.splice(correctPosition,0,correctEntry);
+      choices.forEach((entry,j)=>{
+        const b=document.createElement('button');
+        b.className='opt';b.type='button';
+        b.textContent=['А','Б','В','Г'][j]+'. '+entry.label;
+        b.addEventListener('click',()=>choose(id,b,j,correctPosition,why,op));
+        op.appendChild(b);
+      });
+    }else{
+      const correctPosition=key?0:1;
+      ['Верно','Неверно'].forEach((label,j)=>{
+        const b=document.createElement('button');
+        b.className='opt';b.type='button';b.textContent=label;
+        b.addEventListener('click',()=>choose(id,b,j,correctPosition,why,op));
+        op.appendChild(b);
+      });
+    }
+    root.appendChild(box);
+  });
+}
+function choose(id,btn,choice,key,why,container){if(answered.has(id))return;answered.add(id);const correct=choice===key;if(correct)score++;[...container.children].forEach((b,j)=>{b.disabled=true;if(j===key)b.classList.add('correct');if(j===choice&&!correct)b.classList.add('wrong')});const fb=document.getElementById('fb-'+id);fb.textContent=(correct?'Верно! ':'Пока неверно. ')+why;fb.className='feedback '+(correct?'good':'bad');update()}
+function update(){document.getElementById('score').textContent=score;document.getElementById('mainScore').textContent=score;document.getElementById('mainFill').style.width=(score/38*100)+'%';document.getElementById('mainMessage').textContent=answered.size===30+(orderChecked?8:0)?'Все задания основной части выполнены. Можно переходить к суперзаданию!':`Выполнено закрытых заданий: ${answered.size} из 30. Последовательность проверена: ${orderChecked?'да':'нет'}.`;document.getElementById('totalScore').textContent=score+bonus;document.getElementById('totalFill').style.width=((score+bonus)/50*100)+'%';document.getElementById('totalMessage').textContent=`Основная часть: ${score} из 38. Бонус за пересказ: ${bonus} из 12.`}
+renderChoice('facts',factQs,'f');renderChoice('truths',trueQs.map(x=>[x[0],null,x[1],x[2]]),'t',true);renderChoice('motives',motiveQs,'m');
+const sequence=['Лёля и Минька кладут лягушку и паука в коробку.','Дети оставляют красиво завёрнутый пакет возле тумбы.','Прохожий открывает коробку, и лягушка прыгает ему на руку.','Прохожий догоняет Миньку и наказывает его.','Папа говорит, что Минька поймёт свой поступок, когда вырастет.','Спустя двенадцать лет Минька оказывается в Ростове без денег и документов.','Минька видит красный кошелёк, который дети тянут за нитку.','Минька вспоминает детскую историю и отходит от забора.'];
+const shuffled=[5,2,7,0,4,1,6,3];const ev=document.getElementById('events');shuffled.forEach((n,i)=>{const row=document.createElement('div');row.className='event';row.dataset.correct=n+1;row.innerHTML=`<input type="number" min="1" max="8" placeholder="★" aria-label="Номер события"><div>${sequence[n]}</div>`;ev.appendChild(row)});
+document.getElementById('checkOrder').addEventListener('click',()=>{if(orderChecked)return;const rows=[...ev.querySelectorAll('.event')];let earned=0,filled=true;rows.forEach(r=>{const input=r.querySelector('input');const val=Number(input.value);if(!input.value)filled=false;if(val===Number(r.dataset.correct)){earned++;r.classList.add('correct-row')}else r.classList.add('wrong-row');input.disabled=true});if(!filled){rows.forEach(r=>{r.querySelector('input').disabled=false;r.classList.remove('wrong-row','correct-row')});document.getElementById('orderFeedback').textContent='Заполни все восемь полей, затем проверь ещё раз.';return}score+=earned;orderChecked=true;document.getElementById('checkOrder').disabled=true;document.getElementById('orderFeedback').textContent=`Правильно расположено событий: ${earned} из 8. Ты получил(а) ${earned} баллов.`;update()});
+document.getElementById('applyBonus').addEventListener('click',()=>{const input=document.getElementById('bonus');let n=Number(input.value);if(!Number.isInteger(n)||n<0||n>12){document.getElementById('bonusFeedback').textContent='Введи целое число от 0 до 12.';return}bonus=n;document.getElementById('bonusFeedback').textContent=`Добавлено ${bonus} бонусных баллов за пересказ.`;update()});update();
+</script></body></html>
